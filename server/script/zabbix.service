@@ -1,0 +1,11 @@
+[Unit]
+After=network.target
+
+[Service]
+User=less
+Group=less
+ExecStart=/home/less/zabbix/zbagent.sh start
+
+[Install]
+WantedBy=default.target
+

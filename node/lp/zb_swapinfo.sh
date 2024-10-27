@@ -1,3 +1,3 @@
 #!/bin/bash
 
-cat /proc/swaps | tail -1 | awk '{ print $4/$3*100 }'
+cat /proc/swaps | tail -n +2 | awk '{ u+=$4; t+=$3 } END { print u/t*100 }'

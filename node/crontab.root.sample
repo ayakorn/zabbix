@@ -1,0 +1,1 @@
+*/5 * * * * /home/lesspaper/zabbix/lp/zblp_http.sh -z 68.183.190.10 -h lesspaper2 -s /home/lesspaper/zabbix > /dev/null 2>&1

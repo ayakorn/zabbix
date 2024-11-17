@@ -17,7 +17,12 @@ tmpdat=/var/tmp/zblp_doc2pdf_queue.$(date +"%d").dat
 
 if [ -f $tmpdat ]
 then
-    comm -13 $tmpdat $catalinaout/$logfile | head -1 | cut -f3 -d' '
+    if [ $(stat -c%s $tmpdat) == $(stat -c%s $catalinaout/$logfile) ]
+    then
+        echo 0
+    else
+        comm -13 $tmpdat $catalinaout/$logfile | head -1 | cut -f3 -d' '
+    fi
 else
     echo 0
 fi

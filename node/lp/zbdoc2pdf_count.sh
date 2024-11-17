@@ -13,4 +13,4 @@ while getopts "f:" opt; do
     esac
 done
 
-cat $catalinaout/$logfile | wc -l 
+cat $catalinaout/$logfile | grep "$(date +'%d %b %Y')" | wc -l

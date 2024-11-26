@@ -13,4 +13,13 @@ while getopts "f:" opt; do
     esac
 done
 
-cat $catalinaout/$logfile | grep "$(date +'%d %b %Y')" | wc -l
+# check if file date is today
+filetime=$(stat -c %y $catalinaout/$logfile | cut -f1 -d' ')
+curtime=$(date +"%Y-%m-%d")
+
+if [ "$filetime" == "$curtime" ]
+then
+    cat $catalinaout/$logfile | wc -l
+else
+    echo 0
+fi

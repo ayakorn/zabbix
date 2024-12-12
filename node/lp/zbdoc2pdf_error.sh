@@ -1,7 +1,7 @@
 #!/bin/bash
 
 catalinaout=/opt/lesspaper/tomkat/logs
-logfile=conv.log
+logfile=doc2pdf.log
 
 while getopts "f:" opt; do
     case "$opt" in
@@ -13,4 +13,13 @@ while getopts "f:" opt; do
     esac
 done
 
-cat $catalinaout/$logfile | grep ERROR | wc -l 
+# check if file date is today
+filetime=$(stat -c %y $catalinaout/$logfile | cut -f1 -d' ')
+curtime=$(date +"%Y-%m-%d")
+
+if [ "$filetime" == "$curtime" ]
+then
+    cat $catalinaout/$logfile | grep ERROR | wc -l 
+else
+    echo 0
+fi

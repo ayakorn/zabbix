@@ -4,13 +4,18 @@ progname=$(basename $0)
 catalinaout=/opt/lesspaper/tomcat/logs
 logfile=catalina.out
 
-while getopts "f:" opt; do
+diffmode=false  # reset counter each call
+
+while getopts "f:d" opt; do
     case "$opt" in
     f)  if [ "$OPTARG" != "__NO__" ]
         then
             export catalinaout=$OPTARG
         fi
         ;;
+    d)  diffmode=true
+        ;;
+
     esac
 done
 
@@ -53,10 +58,20 @@ diffprev=$(cat $tmpdat)
 
 if [ $diff -lt 0 ]
 then
-    output=$(expr $diffprev + $num1)
+    if [ "$diffmode" == "true" ]
+    then
+        output=$num1
+    else
+        output=$(expr $diffprev + $num1)
+    fi
     cp $tmperr1 $tmperrtxt
 else
-    output=$(expr $diffprev + $diff)
+    if [ "$diffmode" == "true" ]
+    then
+        output=$diff
+    else
+        output=$(expr $diffprev + $diff)
+    fi
     diff $tmperr $tmperr1 | grep '^>' | cut -c3- > $tmperrtxt
 fi
 

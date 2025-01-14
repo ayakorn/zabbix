@@ -3,11 +3,16 @@
 catalinaout=/opt/lesspaper/tomkat/logs
 logfile=zabbix.log
 
-while getopts "f:" opt; do
+while getopts "f:l:" opt; do
     case "$opt" in
     f)  if [ "$OPTARG" != "__NO__" ]
         then
             export catalinaout=$OPTARG
+        fi
+        ;;
+    l)  if [ "$OPTARG" != "__NO__" ]
+        then
+            export logfile=$OPTARG
         fi
         ;;
     esac

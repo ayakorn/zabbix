@@ -3,3 +3,6 @@
 */5 * * * * /home/lesspaper/zabbix/lp/zblp_siteuser.sh -z 10.130.118.72 -h lesspaper2 -s /home/lesspaper/zabbix > /tmp/zblp_siteuser.log 2>&1
 2 1 * * * find /var/tmp -type f -name zblp_* -mtime +3 -print0 2>/dev/null | xargs -r -0 rm
 3 1 * * * find /opt/lesspaper/tomkat/logs/ -type f -name '*.log-????-??-??' -mtime +20 -print0 | xargs -r -0 rm -rf
+
+
+*/10 * * * * /home/zulip/zabbix/lp/send-zulip.sh >>/tmp/zbsend.log 2>&1

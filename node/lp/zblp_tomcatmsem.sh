@@ -1,11 +1,9 @@
 #!/bin/bash
 
 mode=0
-while getopts "f:m:" opt; do
+while getopts "f:" opt; do
     case "$opt" in
         f)  export url=$OPTARG
-            ;;
-        m)  export mode=$OPTARG
             ;;
     esac
 done

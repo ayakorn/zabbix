@@ -12,5 +12,5 @@ while getopts "f:" opt; do
     esac
 done
 
-cat $catalinaout/exectime.log | /bin/grep "^$(date +'%d %b %Y')" | /bin/grep -o 'executionTime=.* ms' | /usr/bin/awk -F'[= ]' 'BEGIN { exectime = 0 } { exectime = exectime+$2 } END { printf "%d", exectime/1000 }' 
+cat $catalinaout/exectime.log | /bin/grep --text "^$(date +'%d %b %Y')" | /bin/grep -o 'executionTime=.* ms' | /usr/bin/awk -F'[= ]' 'BEGIN { exectime = 0 } { exectime = exectime+$2 } END { printf "%d", exectime/1000 }'
 

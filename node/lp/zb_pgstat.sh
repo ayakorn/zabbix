@@ -47,7 +47,10 @@ then
 fi
 echo $date2 > $pday
 
-. $pgpath/pg_env.sh
+if [ -f $pgpath/pg_env.sh ]
+then
+    . $pgpath/pg_env.sh
+fi
 
 genInput() {
     while read line

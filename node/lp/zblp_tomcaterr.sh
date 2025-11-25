@@ -43,7 +43,7 @@ then
     fi
 fi
 
-cat $catalinaout/$logfile | egrep 'Exception:|ERROR' | egrep -v 'notlogin|BadCredentialsException|Cannot cast object|ต้องอยู่ที่สถานะรอดำเนินการ|ยังไม่ได้กำหนด PIN|LesspaperLoginException: User not found|รหัสลงนามไม่ถูกต้อง|authfail|not found user|hbm2ddl.SchemaUpdate|IssueByEmail CONFIG ERROR|status code = 408|Connection timed out|Connection reset|ไม่มีบทบาท|status code = 401' > $tmperr1
+cat $catalinaout/$logfile | egrep 'Exception:|ERROR' | egrep -v 'notlogin|BadCredentialsException|Cannot cast object|ต้องอยู่ที่สถานะรอดำเนินการ|ยังไม่ได้กำหนด PIN|LesspaperLoginException: User not found|รหัสลงนามไม่ถูกต้อง|authfail|not found user|hbm2ddl.SchemaUpdate|IssueByEmail CONFIG ERROR|status code = 408|Connection timed out|Connection reset|ไม่มีบทบาท|status code = 401|getFolder\(\) on null object' > $tmperr1
 
 num1=$(cat $tmperr1 | wc -l)
 num2=$(cat $tmperr | wc -l)

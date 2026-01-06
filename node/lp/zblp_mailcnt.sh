@@ -1,7 +1,7 @@
 #!/bin/bash
 
 catalinaout=/opt/lesspaper/tomcat/logs
-verbose=false
+export verbose=0
 export zbhost=__NO__
 export zbserver=__NO__
 export zbhome=~/zabbix
@@ -19,7 +19,7 @@ while getopts "f:z:h:s:v" opt; do
         ;;
     s)  export zbhome=$OPTARG
         ;;
-    v)  export verbose=true
+    v)  export verbose=1
         ;;
     esac
 done
@@ -45,7 +45,7 @@ END {
     }
 }' > $tmpinput
 
-if [ $verbose == true ]
+if [ $verbose ]
 then
     cat $tmpinput
 else

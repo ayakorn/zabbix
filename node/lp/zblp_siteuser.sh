@@ -8,6 +8,7 @@ serverText=""
 scpRemoteHost=""
 verbose=false
 tmpinput=/var/tmp/zblp_siteuser.$(whoami).dat
+export verbose=0
 export zbhost=__NO__
 export zbserver=__NO__
 export zbhome=~/zabbix
@@ -33,7 +34,7 @@ while getopts "f:t:r:z:h:s:v" opt; do
             export scpRemoteHost=$OPTARG
         fi
         ;;
-    v)  export verbose=true
+    v)  export verbose=1
         ;;
     esac
 done
@@ -109,7 +110,7 @@ do
     fi
 done
 
-if [ $verbose == true ]
+if [ $verbose ]
 then
     cat $tmpinput
 else

@@ -7,7 +7,7 @@ export pgpath=/opt/PostgreSQL/9.5
 export zbhost=__NO__
 export zbserver=__NO__
 export zbhome=~/zabbix
-export verbose=false
+export verbose=0
 
 export tmpinput=/var/tmp/pgstat.$(whoami).dat
 export phour=/var/tmp/pgstat.phour.$(whoami).dat
@@ -23,7 +23,7 @@ while getopts "d:h:z:s:1:2:v" opt; do
         ;;
     d)  export pgpath=$OPTARG
         ;;
-    v)  export verbose=true
+    v)  export verbose=1
         ;;
     esac
 done
@@ -146,7 +146,7 @@ SELECT 'pgsql.invalidindex', coalesce((array_agg(row_to_json(j)))[1], '{}'::json
 sed -e "s/^/$zbhost /" $tmpinput > $tmpinput.$$
 mv $tmpinput.$$ $tmpinput
 
-if [ $verbose == true ]
+if [ $verbose ]
 then
     cat $tmpinput
 else

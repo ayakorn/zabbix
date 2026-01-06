@@ -7,7 +7,7 @@ export pgpath=/opt/PostgreSQL/9.5
 export zbhost=__NO__
 export zbserver=__NO__
 export zbhome=~/zabbix
-export verbose=false
+export verbose=0
 
 tmplog=/var/tmp/zblp_pg.$(whoami).$(date +"%d").log
 tmplogtxt=/var/tmp/zblp_pgtxt.$(whoami).$(date +"%d").log
@@ -32,7 +32,7 @@ while getopts "d:h:z:s:1:2:v" opt; do
         ;;
     2)  export db2=$OPTARG
         ;;
-    v)  export verbose=true
+    v)  export verbose=1
         ;;
     esac
 done
@@ -136,7 +136,7 @@ fi
 
 echo $today > $tmpsize
 
-if [ $verbose == true ]
+if [ $verbose ]
 then
     cat $tmpinput
 else

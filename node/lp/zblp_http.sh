@@ -6,7 +6,7 @@
 export zbhost=__NO__
 export zbserver=__NO__
 export zbhome=~/zabbix
-export verbose=false
+export verbose=0
 
 export tmpinput=/var/tmp/apstat.$(whoami).dat
 
@@ -18,7 +18,7 @@ while getopts "h:z:s:1:2:v" opt; do
         ;;
     s)  export zbhome=$OPTARG
         ;;
-    v)  export verbose=true
+    v)  export verbose=1
         ;;
     esac
 done
@@ -43,7 +43,7 @@ $NF ~ /^[0-9]+$/ {
 sed -e "s/^/$zbhost /" $tmpinput > $tmpinput.$$
 mv $tmpinput.$$ $tmpinput
 
-if [ $verbose == true ]
+if [ $verbose ]
 then
     cat $tmpinput
 else

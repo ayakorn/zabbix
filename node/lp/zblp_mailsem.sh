@@ -1,7 +1,7 @@
 #!/bin/bash
 
 url=http://localhost:7080/lesspaper
-verbose=false
+export verbose=0
 export zbhost=__NO__
 export zbserver=__NO__
 export zbhome=~/zabbix
@@ -21,7 +21,7 @@ while getopts "f:z:h:s:k:v" opt; do
         ;;
     k)  export key=$OPTARG
         ;;
-    v)  export verbose=true
+    v)  export verbose=1
         ;;
     esac
 done
@@ -37,7 +37,7 @@ url=${url%/}    # remove last /
 
 status=$(curl --connect-timeout 5 -s "$url/status/availableMailSender")
 
-if [ $verbose == true ]
+if [ $verbose ]
 then
     echo $status
 else

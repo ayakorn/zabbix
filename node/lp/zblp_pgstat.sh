@@ -136,7 +136,7 @@ fi
 
 echo $today > $tmpsize
 
-if [ $verbose ]
+if [ $verbose -eq 1 ]
 then
     cat $tmpinput
 else

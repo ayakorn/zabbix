@@ -110,7 +110,7 @@ do
     fi
 done
 
-if [ $verbose ]
+if [ $verbose -eq 1 ]
 then
     cat $tmpinput
 else

@@ -37,7 +37,7 @@ url=${url%/}    # remove last /
 
 status=$(curl --connect-timeout 5 -s "$url/status/availableMailSender")
 
-if [ $verbose ]
+if [ $verbose -eq 1 ]
 then
     echo $status
 else

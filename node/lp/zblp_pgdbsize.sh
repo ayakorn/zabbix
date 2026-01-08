@@ -39,7 +39,7 @@ select pg_database_size(datname) from pg_database where datname = '${prefix}_$db
 \q
 !
 
-if [ $verbose ]
+if [ $verbose -eq 1 ]
 then
     cat $tmpinput
 else

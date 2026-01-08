@@ -43,7 +43,7 @@ $NF ~ /^[0-9]+$/ {
 sed -e "s/^/$zbhost /" $tmpinput > $tmpinput.$$
 mv $tmpinput.$$ $tmpinput
 
-if [ $verbose ]
+if [ $verbose -eq 1 ]
 then
     cat $tmpinput
 else

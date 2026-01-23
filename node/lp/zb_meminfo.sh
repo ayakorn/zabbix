@@ -6,9 +6,10 @@ cat /proc/meminfo | awk '
         if ($1=="MemFree:") memfree = $2
         if ($1=="Cached:") memcache = $2
         if ($1=="Buffers:") membuff = $2
+        if ($1=="SReclaimable:") reclaim = $2
     }
 END {
-        memused = memtotal-memfree-memcache-membuff
+        memused = memtotal-memfree-memcache-membuff-reclaim
         memusedp = memused*100/memtotal
         printf "%d", memusedp
     }

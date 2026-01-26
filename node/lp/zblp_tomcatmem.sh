@@ -6,6 +6,7 @@ then
     export PATH=$JAVA_HOME/jre/bin:$JAVA_HOME/bin:$PATH
 fi
 
+progname=$(basename $0)
 serverText=lesspaper/tomcat
 
 while getopts "j:g:t:" opt; do
@@ -32,44 +33,51 @@ then
     exit 1
 fi
 
+modemax=0
+if [ "$progname" == "zblp_tomcatmaxmem.sh" ]
+then
+    modemax=1
+fi
+export modemax
+
 pid=$(ps -ef | grep java | grep "$serverText" | grep -v grep | awk '{print $2}')
 if [ "$pid" != "" ]
 then
-    (jstat -gc $pid; jstat -gccapacity $pid) | awk '
+    jstat -gc $pid | tail -n 1 | awk '
   BEGIN {
             param = ENVIRON["argget"]
+            modemax = ENVIRON["modemax"]
         }
         {
-            if (NR == 1 || NR == 3) {
-                for (i = 1; i <= NF; i++) {
-                    var[$i] = 0
-                    name[i] = $i
-                }
-            } else if (NR == 2 || NR == 4) {
-                for (i = 1; i <= NF; i++) {
-                    var[name[i]] = $i
-                }
-            }
+            # --- Heap Calculation ---
+            # Usage = S0U + S1U + EU + OU
+            heap_u_kb = $3 + $4 + $6 + $8
+            # Capacity = S0C + S1C + EC + OC
+            heap_c_kb = $1 + $2 + $5 + $7
+ 
+            heap_u_bytes = heap_u_kb * 1024;
+            heap_p = (heap_u_kb / heap_c_kb) * 100
+
+            # --- Metaspace Calculation ---
+            meta_u_kb = $10
+            meta_c_kb = $9
+ 
+            meta_u_bytes = meta_u_kb * 1024
+            meta_p = (meta_u_kb / meta_c_kb) * 100
         }
-END     {
-            if ("MU" in var) {
-                perm_used = var["MU"]
+  END   {
+            if (modemax == 1) {
+                if (param == "heap") {
+                    printf "%d", heap_c_kb * 1024
+                } else if (param == "perm") {
+                    printf "%d", meta_c_kb * 1024
+                }
             } else {
-                perm_used = var["PU"]
-            }
-            if ("MC" in var) {
-                perm_max = var["MC"]
-            } else {
-                perm_max = var["PGCMX"]
-            }
-
-            heap_used = var["EU"] + var["OU"]
-            heap_max = var["NGCMX"] + var["OGCMX"]
-
-            if (param == "heap") {
-                printf "%d", heap_used*100/heap_max
-            } else if (param == "perm") {
-                printf "%d", perm_used*100/perm_max
+                if (param == "heap") {
+                    printf "%d", heap_p
+                } else if (param == "perm") {
+                    printf "%d", meta_p
+                }
             }
         }'
 else

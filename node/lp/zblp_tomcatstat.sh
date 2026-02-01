@@ -24,12 +24,29 @@ while getopts "j:t:" opt; do
 esac
 done
 
+datfile=/var/tmp/zblp_tomcatstat.$(echo $serverText | tr -d '/').$(date +"%d").dat
 pid=$(ps -ef | grep java | grep "$serverText" | grep -v grep | awk '{print $2}')
 if [ "$pid" != "" ]
 then
     line=$(jstat -gc $pid | tail -n 1)
     read S0C S1C S0U S1U EC EU OC OU MC MU CCSC CCSU YGC YGCT FGC FGCT GCT <<< $line
-    echo "{\"S0C\":$S0C,\"S1C\":$S1C,\"S0U\":$S0U,\"S1U\":$S1U,\"EC\":$EC,\"EU\":$EU,\"OC\":$OC,\"OU\":$OU,\"MC\":$MC,\"MU\":$MU,\"YGC\":$YGC,\"YGCT\":$YGCT,\"FGC\":$FGC,\"FGCT\":$FGCT,\"GCT\":$GCT}"
+
+    # reset FGC FGCT GCT every day
+    if [ ! -f $datfile ]
+    then
+        PFGC=$FGC
+        PFGCT=$FGCT
+        PGCT=$GCT
+    else
+        read PFGC PFGCT PGCT < "$datfile"
+    fi
+    echo "$FGC $FGCT $GCT" > $datfile
+
+    DELTA_FGC=$(awk "BEGIN { if ($FGC > $PFGC) print $FGC - $PFGC; else print 0 }")
+    DELTA_FGCT=$(awk "BEGIN { if ($FGCT > $PFGCT) print $FGCT - $PFGCT; else print 0 }")
+    DELTA_GCT=$(awk "BEGIN { if ($GCT > $PGCT) print $GCT - $PGCT; else print 0 }")
+
+    echo "{\"S0C\":$S0C,\"S1C\":$S1C,\"S0U\":$S0U,\"S1U\":$S1U,\"EC\":$EC,\"EU\":$EU,\"OC\":$OC,\"OU\":$OU,\"MC\":$MC,\"MU\":$MU,\"YGC\":$YGC,\"YGCT\":$YGCT,\"FGC\":$DELTA_FGC,\"FGCT\":$DELTA_FGCT,\"GCT\":$DELTA_GCT}"
 else
     echo "{}"
 fi

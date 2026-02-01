@@ -40,7 +40,7 @@ then
         fi
         read PFGC PFGCT PGCT < "$datfile"
 
-        if [ awk "BEGIN {exit !($GCT < $PGCT)}" ]
+        if awk "BEGIN {exit !($GCT < $PGCT)}"
         then
             # reset if restart tomcat
             echo "$FGC $FGCT $GCT" > $datfile
